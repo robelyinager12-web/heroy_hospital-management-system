@@ -4,9 +4,11 @@ import { useState } from "react";
 import { useQuery, useQueryClient, useMutation } from "@tanstack/react-query";
 import { Search, Plus, Trash2, Loader2 } from "lucide-react";
 import { patientsApi, PatientListResponse } from "@/features/patients/api/patients.api";
+import { CreatePatientModal } from "@/features/patients/components/create-patient-modal";
 
 export default function PatientsPage() {
   const [search, setSearch] = useState("");
+  const [modalOpen, setModalOpen] = useState(false);
   const [page, setPage] = useState(1);
   const queryClient = useQueryClient();
 
@@ -32,7 +34,7 @@ export default function PatientsPage() {
             {data?.pagination.total ?? 0} total patients
           </p>
         </div>
-        <button className="flex items-center gap-2 px-4 py-2 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 text-white text-sm font-medium hover:opacity-90 transition">
+        <button onClick={() => setModalOpen(true)} className="flex items-center gap-2 px-4 py-2 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 text-white text-sm font-medium hover:opacity-90 transition">
           <Plus size={16} />
           Add Patient
         </button>
@@ -123,6 +125,8 @@ export default function PatientsPage() {
           </button>
         </div>
       )}
+
+      <CreatePatientModal open={modalOpen} onClose={() => setModalOpen(false)} />
     </div>
   );
 }
