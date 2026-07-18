@@ -10,7 +10,7 @@ import patientsRoutes from "./modules/patients/patients.routes";
 const app = express();
 
 app.use(helmet());
-app.use(cors({ origin: process.env.CLIENT_URL ?? "http://localhost:3000", credentials: true }));
+app.use(cors({ origin: [process.env.CLIENT_URL ?? "http://localhost:3000", "http://192.168.43.171:3000"], credentials: true }));
 app.use(express.json());
 app.use(cookieParser());
 app.use(globalRateLimiter);
