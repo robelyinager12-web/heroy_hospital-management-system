@@ -8,6 +8,7 @@ import authRoutes from "./modules/auth/auth.routes";
 import patientsRoutes from "./modules/patients/patients.routes";
 import doctorsRoutes from "./modules/doctors/doctors.routes";
 import nursesRoutes from "./modules/nurses/nurses.routes";
+import appointmentsRoutes from "./modules/appointments/appointments.routes";
 
 const app = express();
 
@@ -21,6 +22,7 @@ app.use("/api/auth", authRoutes);
 app.use("/api/patients", patientsRoutes);
 app.use("/api/doctors", doctorsRoutes);
 app.use("/api/nurses", nursesRoutes);
+app.use("/api/appointments", appointmentsRoutes);
 
 app.get("/health", (_req, res) => res.json({ status: "ok" }));
 

@@ -1,6 +1,7 @@
 import { apiClient } from "@/lib/api-client";
 
 export interface Patient {
+  userId: string;
   id: string;
   patientCode: string;
   gender?: string;
