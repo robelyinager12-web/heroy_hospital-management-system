@@ -11,6 +11,7 @@ import nursesRoutes from "./modules/nurses/nurses.routes";
 import appointmentsRoutes from "./modules/appointments/appointments.routes";
 import emergencyRoutes from "./modules/emergency/emergency.routes";
 import billingRoutes from "./modules/billing/billing.routes";
+import pharmacyRoutes from "./modules/pharmacy/pharmacy.routes";
 
 const app = express();
 
@@ -27,6 +28,7 @@ app.use("/api/nurses", nursesRoutes);
 app.use("/api/appointments", appointmentsRoutes);
 app.use("/api/emergency", emergencyRoutes);
 app.use("/api/billing", billingRoutes);
+app.use("/api/pharmacy", pharmacyRoutes);
 
 app.get("/health", (_req, res) => res.json({ status: "ok" }));
 
