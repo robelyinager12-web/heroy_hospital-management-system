@@ -1,8 +1,137 @@
-export default function nursesPage() {
+"use client";
+
+import { useState } from "react";
+import { useQuery, useQueryClient, useMutation } from "@tanstack/react-query";
+import { Search, Plus, Trash2, Loader2 } from "lucide-react";
+import { nursesApi, NurseListResponse } from "@/features/nurses/api/nurses.api";
+import { CreateNurseModal } from "@/features/nurses/components/create-nurse-modal";
+
+export default function NursesPage() {
+  const [search, setSearch] = useState("");
+  const [page, setPage] = useState(1);
+  const [modalOpen, setModalOpen] = useState(false);
+  const queryClient = useQueryClient();
+
+  const { data, isLoading, isError } = useQuery({
+    queryKey: ["nurses", page, search],
+    queryFn: async () => {
+      const res = await nursesApi.list({ page, search });
+      return res.data as NurseListResponse;
+    },
+  });
+
+  const deleteMutation = useMutation({
+    mutationFn: (id: string) => nursesApi.remove(id),
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["nurses"] }),
+  });
+
   return (
-    <div className="flex flex-col items-center justify-center py-24 text-center">
-      <h1 className="text-2xl font-bold text-white">Nurses</h1>
-      <p className="mt-2 text-slate-400">This module is coming soon.</p>
+    <div className="space-y-6">
+      <div className="flex items-center justify-between">
+        <div>
+          <h1 className="text-2xl font-bold text-white">Nurses</h1>
+          <p className="text-slate-400 text-sm mt-1">
+            {data?.pagination.total ?? 0} total nurses
+          </p>
+        </div>
+        <button
+          onClick={() => setModalOpen(true)}
+          className="flex items-center gap-2 px-4 py-2 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 text-white text-sm font-medium hover:opacity-90 transition"
+        >
+          <Plus size={16} />
+          Add Nurse
+        </button>
+      </div>
+
+      <div className="relative max-w-sm">
+        <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500" />
+        <input
+          value={search}
+          onChange={(e) => {
+            setSearch(e.target.value);
+            setPage(1);
+          }}
+          placeholder="Search by name or email..."
+          className="w-full rounded-xl bg-white/5 border border-white/10 pl-9 pr-4 py-2.5 text-sm text-white placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-cyan-400/50"
+        />
+      </div>
+
+      <div className="rounded-2xl border border-white/10 bg-white/5 backdrop-blur-xl overflow-hidden">
+        {isLoading ? (
+          <div className="flex items-center justify-center py-16 text-slate-400">
+            <Loader2 className="animate-spin mr-2" size={18} />
+            Loading nurses...
+          </div>
+        ) : isError ? (
+          <div className="text-center py-16 text-red-400">
+            Couldn't load nurses. Is the backend running on port 4000?
+          </div>
+        ) : data?.items.length === 0 ? (
+          <div className="text-center py-16 text-slate-400">
+            No nurses found. Try adjusting your search, or add a new nurse.
+          </div>
+        ) : (
+          <table className="w-full text-sm">
+            <thead>
+              <tr className="border-b border-white/10 text-left text-slate-400">
+                <th className="px-5 py-3 font-medium">Nurse</th>
+                <th className="px-5 py-3 font-medium">Email</th>
+                <th className="px-5 py-3 font-medium">Phone</th>
+                <th className="px-5 py-3 font-medium">Status</th>
+                <th className="px-5 py-3 font-medium"></th>
+              </tr>
+            </thead>
+            <tbody>
+              {data?.items.map((nurse) => (
+                <tr key={nurse.id} className="border-b border-white/5 hover:bg-white/5 transition-colors">
+                  <td className="px-5 py-3 text-white">
+                    {nurse.firstName} {nurse.lastName}
+                  </td>
+                  <td className="px-5 py-3 text-slate-400">{nurse.email}</td>
+                  <td className="px-5 py-3 text-slate-400">{nurse.phone ?? "—"}</td>
+                  <td className="px-5 py-3">
+                    <span className="px-2 py-0.5 rounded-full text-xs bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+                      {nurse.status}
+                    </span>
+                  </td>
+                  <td className="px-5 py-3 text-right">
+                    <button
+                      onClick={() => deleteMutation.mutate(nurse.id)}
+                      className="p-1.5 rounded-lg text-slate-500 hover:text-red-400 hover:bg-red-500/10 transition-colors"
+                    >
+                      <Trash2 size={15} />
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        )}
+      </div>
+
+      {data && data.pagination.totalPages > 1 && (
+        <div className="flex items-center justify-center gap-2 text-sm text-slate-400">
+          <button
+            disabled={page <= 1}
+            onClick={() => setPage((p) => p - 1)}
+            className="px-3 py-1.5 rounded-lg border border-white/10 disabled:opacity-40 hover:bg-white/5"
+          >
+            Previous
+          </button>
+          <span>
+            Page {data.pagination.page} of {data.pagination.totalPages}
+          </span>
+          <button
+            disabled={page >= data.pagination.totalPages}
+            onClick={() => setPage((p) => p + 1)}
+            className="px-3 py-1.5 rounded-lg border border-white/10 disabled:opacity-40 hover:bg-white/5"
+          >
+            Next
+          </button>
+        </div>
+      )}
+
+      <CreateNurseModal open={modalOpen} onClose={() => setModalOpen(false)} />
     </div>
   );
 }

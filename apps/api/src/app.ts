@@ -6,6 +6,8 @@ import { globalRateLimiter } from "./middlewares/rate-limit.middleware";
 import { errorHandler } from "./middlewares/error-handler.middleware";
 import authRoutes from "./modules/auth/auth.routes";
 import patientsRoutes from "./modules/patients/patients.routes";
+import doctorsRoutes from "./modules/doctors/doctors.routes";
+import nursesRoutes from "./modules/nurses/nurses.routes";
 
 const app = express();
 
@@ -17,6 +19,8 @@ app.use(globalRateLimiter);
 
 app.use("/api/auth", authRoutes);
 app.use("/api/patients", patientsRoutes);
+app.use("/api/doctors", doctorsRoutes);
+app.use("/api/nurses", nursesRoutes);
 
 app.get("/health", (_req, res) => res.json({ status: "ok" }));
 
