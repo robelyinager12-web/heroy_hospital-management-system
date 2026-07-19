@@ -2,6 +2,7 @@ import { aiRepository } from "./ai.repository";
 import { groqClient, GROQ_MODEL } from "../../config/groq.config";
 import { AppError } from "../../middlewares/error-handler.middleware";
 import { SendMessageInput } from "./ai.validation";
+import { toFile } from "groq-sdk/uploads";
 
 const SYSTEM_PROMPT = `You are the HEROY Hospital Management System AI assistant. You help hospital staff and patients with:
 - General medical information and explanations (never a diagnosis)
@@ -9,7 +10,7 @@ const SYSTEM_PROMPT = `You are the HEROY Hospital Management System AI assistant
 - Answering questions about symptoms, medications, and general health topics
 - Summarizing information clearly and concisely
 
-Always remind users that you are not a substitute for professional medical advice when discussing symptoms or treatment. Be warm, clear, and concise.`;
+Always remind users that you are not a substitute for professional medical advice when discussing symptoms or treatment. Be warm, clear, and concise. Since your responses may be read aloud, keep them conversational and avoid heavy markdown formatting like bullet lists when possible.`;
 
 export const aiService = {
   async listConversations(userId: string) {
@@ -20,6 +21,20 @@ export const aiService = {
     const conversation = await aiRepository.findConversation(id, userId);
     if (!conversation) throw new AppError(404, "Conversation not found");
     return conversation;
+  },
+
+  async transcribeAudio(buffer: Buffer, filename: string) {
+    try {
+      const file = await toFile(buffer, filename);
+      const transcription = await groqClient.audio.transcriptions.create({
+        file,
+        model: "whisper-large-v3-turbo",
+      });
+      return transcription.text;
+    } catch (err) {
+      console.error("Groq transcription error:", err);
+      throw new AppError(502, "Couldn't transcribe audio. Please try again.");
+    }
   },
 
   async sendMessage(userId: string, input: SendMessageInput) {

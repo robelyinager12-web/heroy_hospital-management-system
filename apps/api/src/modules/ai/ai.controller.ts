@@ -31,4 +31,16 @@ export const aiController = {
       next(err);
     }
   },
+
+  async transcribe(req: AuthenticatedRequest, res: Response, next: NextFunction) {
+    try {
+      if (!req.file) {
+        return res.status(400).json({ message: "No audio file provided" });
+      }
+      const text = await aiService.transcribeAudio(req.file.buffer, req.file.originalname);
+      res.json({ text });
+    } catch (err) {
+      next(err);
+    }
+  },
 };
