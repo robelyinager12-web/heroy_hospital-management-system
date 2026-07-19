@@ -12,6 +12,7 @@ import appointmentsRoutes from "./modules/appointments/appointments.routes";
 import emergencyRoutes from "./modules/emergency/emergency.routes";
 import billingRoutes from "./modules/billing/billing.routes";
 import pharmacyRoutes from "./modules/pharmacy/pharmacy.routes";
+import laboratoryRoutes from "./modules/laboratory/laboratory.routes";
 
 const app = express();
 
@@ -29,6 +30,7 @@ app.use("/api/appointments", appointmentsRoutes);
 app.use("/api/emergency", emergencyRoutes);
 app.use("/api/billing", billingRoutes);
 app.use("/api/pharmacy", pharmacyRoutes);
+app.use("/api/laboratory", laboratoryRoutes);
 
 app.get("/health", (_req, res) => res.json({ status: "ok" }));
 
