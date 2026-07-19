@@ -13,6 +13,7 @@ import emergencyRoutes from "./modules/emergency/emergency.routes";
 import billingRoutes from "./modules/billing/billing.routes";
 import pharmacyRoutes from "./modules/pharmacy/pharmacy.routes";
 import laboratoryRoutes from "./modules/laboratory/laboratory.routes";
+import aiRoutes from "./modules/ai/ai.routes";
 
 const app = express();
 
@@ -31,6 +32,7 @@ app.use("/api/emergency", emergencyRoutes);
 app.use("/api/billing", billingRoutes);
 app.use("/api/pharmacy", pharmacyRoutes);
 app.use("/api/laboratory", laboratoryRoutes);
+app.use("/api/ai", aiRoutes);
 
 app.get("/health", (_req, res) => res.json({ status: "ok" }));
 
