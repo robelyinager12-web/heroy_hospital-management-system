@@ -1,14 +1,15 @@
 "use client";
 
 import { Search, Sun, Moon } from "lucide-react";
-import { useState } from "react";
 import { NotificationBell } from "@/components/layout/notification-bell";
+import { ProfileMenu } from "@/components/layout/profile-menu";
+import { useTheme } from "@/components/providers/theme-provider";
 
 export function Topbar() {
-  const [isDark, setIsDark] = useState(true);
+  const { theme, toggleTheme } = useTheme();
 
   return (
-    <header className="sticky top-0 z-20 flex items-center justify-between px-6 py-4 border-b border-white/10 bg-slate-950/40 backdrop-blur-xl">
+    <header className="sticky top-0 z-20 flex items-center justify-between px-6 py-4 border-b border-white/10 bg-slate-950/40 backdrop-blur-xl theme-surface">
       <div className="relative w-full max-w-md">
         <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500" />
         <input
@@ -19,12 +20,14 @@ export function Topbar() {
 
       <div className="flex items-center gap-3">
         <button
-          onClick={() => setIsDark((d) => !d)}
+          onClick={toggleTheme}
+          title={theme === "dark" ? "Switch to light mode" : "Switch to dark mode"}
           className="p-2 rounded-lg text-slate-400 hover:text-white hover:bg-white/5 transition-colors"
         >
-          {isDark ? <Sun size={18} /> : <Moon size={18} />}
+          {theme === "dark" ? <Sun size={18} /> : <Moon size={18} />}
         </button>
         <NotificationBell />
+        <ProfileMenu />
       </div>
     </header>
   );

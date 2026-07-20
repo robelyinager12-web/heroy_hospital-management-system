@@ -1,1 +1,22 @@
 @import "tailwindcss";
+
+html.light body {
+  background-color: #f8fafc;
+}
+
+html.light .theme-surface {
+  background-color: rgba(255, 255, 255, 0.7) !important;
+  border-color: rgba(15, 23, 42, 0.08) !important;
+}
+
+html.light .theme-bg {
+  background: linear-gradient(to bottom right, #f8fafc, #eef2ff, #f8fafc) !important;
+}
+
+html.light .theme-text {
+  color: #0f172a !important;
+}
+
+html.light .theme-text-muted {
+  color: #64748b !important;
+}
