@@ -1,5 +1,6 @@
 import { pharmacyRepository } from "./pharmacy.repository";
 import { AppError } from "../../middlewares/error-handler.middleware";
+import { notifyRoles } from "../notifications/notifications.service";
 import { CreateMedicineInput, UpdateMedicineInput, AdjustStockInput, ListMedicinesQuery } from "./pharmacy.validation";
 
 export const pharmacyService = {
@@ -50,7 +51,18 @@ export const pharmacyService = {
       throw new AppError(400, "Cannot dispense more than the available stock");
     }
 
-    return pharmacyRepository.adjustStock(id, input.delta);
+    const updated = await pharmacyRepository.adjustStock(id, input.delta);
+
+    if (updated.quantity <= updated.reorderLevel && medicine.quantity > medicine.reorderLevel) {
+      // Just crossed into low-stock territory — notify pharmacy staff
+      await notifyRoles(["SUPER_ADMIN", "HOSPITAL_ADMIN", "PHARMACIST"], {
+        title: "Low stock alert",
+        message: `${updated.name} is running low (${updated.quantity} ${updated.unit} remaining, reorder level ${updated.reorderLevel}).`,
+        metadata: { medicineId: updated.id },
+      });
+    }
+
+    return updated;
   },
 
   async remove(id: string) {

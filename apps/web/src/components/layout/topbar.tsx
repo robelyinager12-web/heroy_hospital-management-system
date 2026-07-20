@@ -1,7 +1,8 @@
 "use client";
 
-import { Bell, Search, Sun, Moon } from "lucide-react";
+import { Search, Sun, Moon } from "lucide-react";
 import { useState } from "react";
+import { NotificationBell } from "@/components/layout/notification-bell";
 
 export function Topbar() {
   const [isDark, setIsDark] = useState(true);
@@ -23,11 +24,7 @@ export function Topbar() {
         >
           {isDark ? <Sun size={18} /> : <Moon size={18} />}
         </button>
-
-        <button className="relative p-2 rounded-lg text-slate-400 hover:text-white hover:bg-white/5 transition-colors">
-          <Bell size={18} />
-          <span className="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-cyan-400" />
-        </button>
+        <NotificationBell />
       </div>
     </header>
   );

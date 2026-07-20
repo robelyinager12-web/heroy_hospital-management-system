@@ -1,5 +1,6 @@
 import { appointmentsRepository } from "./appointments.repository";
 import { AppError } from "../../middlewares/error-handler.middleware";
+import { notifyUser, notifyRoles } from "../notifications/notifications.service";
 import { CreateAppointmentInput, UpdateAppointmentInput, ListAppointmentsQuery } from "./appointments.validation";
 
 export const appointmentsService = {
@@ -29,7 +30,7 @@ export const appointmentsService = {
   },
 
   async create(input: CreateAppointmentInput) {
-    return appointmentsRepository.create({
+    const appointment = await appointmentsRepository.create({
       patientId: input.patientUserId,
       doctorId: input.doctorUserId,
       type: input.type,
@@ -38,6 +39,25 @@ export const appointmentsService = {
       reason: input.reason,
       notes: input.notes,
     });
+
+    const when = new Date(appointment.scheduledAt).toLocaleString();
+    const patientName = `${appointment.patient.firstName} ${appointment.patient.lastName}`;
+    const doctorName = `${appointment.doctor.firstName} ${appointment.doctor.lastName}`;
+
+    await notifyUser({
+      userId: appointment.doctorId,
+      title: "New appointment booked",
+      message: `${patientName} booked an appointment with you on ${when}.`,
+      metadata: { appointmentId: appointment.id },
+    });
+
+    await notifyRoles(["SUPER_ADMIN", "HOSPITAL_ADMIN"], {
+      title: "New appointment booked",
+      message: `${patientName} booked with Dr. ${doctorName} on ${when}.`,
+      metadata: { appointmentId: appointment.id },
+    });
+
+    return appointment;
   },
 
   async update(id: string, input: UpdateAppointmentInput) {

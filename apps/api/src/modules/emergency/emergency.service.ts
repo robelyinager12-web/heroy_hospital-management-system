@@ -1,5 +1,6 @@
 import { emergencyRepository } from "./emergency.repository";
 import { AppError } from "../../middlewares/error-handler.middleware";
+import { notifyRoles } from "../notifications/notifications.service";
 import { CreateEmergencyCaseInput, UpdateEmergencyCaseInput, ListEmergencyQuery } from "./emergency.validation";
 
 export const emergencyService = {
@@ -28,7 +29,17 @@ export const emergencyService = {
     return emergencyCase;
   },
 
-  create: (input: CreateEmergencyCaseInput) => emergencyRepository.create(input),
+  async create(input: CreateEmergencyCaseInput) {
+    const emergencyCase = await emergencyRepository.create(input);
+
+    await notifyRoles(["SUPER_ADMIN", "HOSPITAL_ADMIN", "DOCTOR", "NURSE"], {
+      title: "New emergency case",
+      message: `${emergencyCase.patient.user.firstName} ${emergencyCase.patient.user.lastName} was just admitted — ${emergencyCase.reason}.`,
+      metadata: { emergencyCaseId: emergencyCase.id },
+    });
+
+    return emergencyCase;
+  },
 
   async update(id: string, input: UpdateEmergencyCaseInput) {
     await this.getById(id);
