@@ -18,6 +18,7 @@ import notificationsRoutes from "./modules/notifications/notifications.routes";
 import inventoryRoutes from "./modules/inventory/inventory.routes";
 import radiologyRoutes from "./modules/radiology/radiology.routes";
 import surgeryRoutes from "./modules/surgery/surgery.routes";
+import ipdRoutes from "./modules/ipd/ipd.routes";
 
 const app = express();
 
@@ -41,6 +42,7 @@ app.use("/api/notifications", notificationsRoutes);
 app.use("/api/inventory", inventoryRoutes);
 app.use("/api/radiology", radiologyRoutes);
 app.use("/api/surgery", surgeryRoutes);
+app.use("/api/ipd", ipdRoutes);
 
 app.get("/health", (_req, res) => res.json({ status: "ok" }));
 
