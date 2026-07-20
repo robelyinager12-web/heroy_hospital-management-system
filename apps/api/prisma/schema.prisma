@@ -264,11 +264,12 @@ model Patient {
   user     User      @relation(fields: [userId], references: [id], onDelete: Cascade)
   hospital Hospital? @relation(fields: [hospitalId], references: [id])
 
-  medicalRecords MedicalRecord[]
-  prescriptions  Prescription[]
-  labTests       LabTest[]
-  invoices       Invoice[]
-  admissions     Admission[]
+  medicalRecords    MedicalRecord[]
+  prescriptions     Prescription[]
+  labTests          LabTest[]
+  invoices          Invoice[]
+  admissions        Admission[]
+  ambulanceRequests AmbulanceRequest[]
 
   @@index([hospitalId])
   @@index([patientCode])
@@ -560,4 +561,48 @@ model AiConversationMessage {
   conversation AiConversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
 
   @@index([conversationId])
+}
+
+enum AmbulanceStatus {
+  AVAILABLE
+  ON_CALL
+  MAINTENANCE
+}
+
+enum AmbulanceRequestStatus {
+  REQUESTED
+  DISPATCHED
+  EN_ROUTE
+  COMPLETED
+  CANCELLED
+}
+
+model Ambulance {
+  id            String          @id @default(cuid())
+  vehicleNumber String          @unique
+  driverName    String
+  driverPhone   String?
+  status        AmbulanceStatus @default(AVAILABLE)
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @updatedAt
+
+  requests AmbulanceRequest[]
+}
+
+model AmbulanceRequest {
+  id             String                 @id @default(cuid())
+  ambulanceId    String?
+  patientId      String?
+  pickupLocation String
+  destination    String
+  status         AmbulanceRequestStatus @default(REQUESTED)
+  notes          String?
+  requestedAt    DateTime               @default(now())
+  completedAt    DateTime?
+
+  ambulance Ambulance? @relation(fields: [ambulanceId], references: [id])
+  patient   Patient?   @relation(fields: [patientId], references: [id])
+
+  @@index([ambulanceId])
+  @@index([patientId])
 }
