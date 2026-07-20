@@ -15,6 +15,7 @@ import pharmacyRoutes from "./modules/pharmacy/pharmacy.routes";
 import laboratoryRoutes from "./modules/laboratory/laboratory.routes";
 import aiRoutes from "./modules/ai/ai.routes";
 import notificationsRoutes from "./modules/notifications/notifications.routes";
+import inventoryRoutes from "./modules/inventory/inventory.routes";
 
 const app = express();
 
@@ -35,6 +36,7 @@ app.use("/api/pharmacy", pharmacyRoutes);
 app.use("/api/laboratory", laboratoryRoutes);
 app.use("/api/ai", aiRoutes);
 app.use("/api/notifications", notificationsRoutes);
+app.use("/api/inventory", inventoryRoutes);
 
 app.get("/health", (_req, res) => res.json({ status: "ok" }));
 
