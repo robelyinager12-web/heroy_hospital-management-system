@@ -270,6 +270,7 @@ model Patient {
   invoices          Invoice[]
   admissions        Admission[]
   ambulanceRequests AmbulanceRequest[]
+  bloodRequests     BloodRequest[]
 
   @@index([hospitalId])
   @@index([patientCode])
@@ -604,5 +605,34 @@ model AmbulanceRequest {
   patient   Patient?   @relation(fields: [patientId], references: [id])
 
   @@index([ambulanceId])
+  @@index([patientId])
+}
+
+enum BloodRequestStatus {
+  PENDING
+  APPROVED
+  FULFILLED
+  CANCELLED
+}
+
+model BloodStock {
+  id         String     @id @default(cuid())
+  bloodGroup BloodGroup @unique
+  units      Int        @default(0)
+  updatedAt  DateTime   @updatedAt
+}
+
+model BloodRequest {
+  id             String             @id @default(cuid())
+  patientId      String?
+  bloodGroup     BloodGroup
+  unitsRequested Int
+  status         BloodRequestStatus @default(PENDING)
+  notes          String?
+  requestedAt    DateTime           @default(now())
+  fulfilledAt    DateTime?
+
+  patient Patient? @relation(fields: [patientId], references: [id])
+
   @@index([patientId])
 }

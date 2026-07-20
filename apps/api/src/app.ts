@@ -20,6 +20,7 @@ import radiologyRoutes from "./modules/radiology/radiology.routes";
 import surgeryRoutes from "./modules/surgery/surgery.routes";
 import ipdRoutes from "./modules/ipd/ipd.routes";
 import ambulanceRoutes from "./modules/ambulance/ambulance.routes";
+import bloodBankRoutes from "./modules/blood-bank/blood-bank.routes";
 
 const app = express();
 
@@ -45,6 +46,7 @@ app.use("/api/radiology", radiologyRoutes);
 app.use("/api/surgery", surgeryRoutes);
 app.use("/api/ipd", ipdRoutes);
 app.use("/api/ambulance", ambulanceRoutes);
+app.use("/api/blood-bank", bloodBankRoutes);
 
 app.get("/health", (_req, res) => res.json({ status: "ok" }));
 
