@@ -16,6 +16,7 @@ import laboratoryRoutes from "./modules/laboratory/laboratory.routes";
 import aiRoutes from "./modules/ai/ai.routes";
 import notificationsRoutes from "./modules/notifications/notifications.routes";
 import inventoryRoutes from "./modules/inventory/inventory.routes";
+import radiologyRoutes from "./modules/radiology/radiology.routes";
 
 const app = express();
 
@@ -37,6 +38,7 @@ app.use("/api/laboratory", laboratoryRoutes);
 app.use("/api/ai", aiRoutes);
 app.use("/api/notifications", notificationsRoutes);
 app.use("/api/inventory", inventoryRoutes);
+app.use("/api/radiology", radiologyRoutes);
 
 app.get("/health", (_req, res) => res.json({ status: "ok" }));
 
