@@ -271,6 +271,7 @@ model Patient {
   admissions        Admission[]
   ambulanceRequests AmbulanceRequest[]
   bloodRequests     BloodRequest[]
+  insurancePolicies InsurancePolicy[]
 
   @@index([hospitalId])
   @@index([patientCode])
@@ -470,9 +471,10 @@ model Invoice {
   createdAt DateTime      @default(now())
   updatedAt DateTime      @updatedAt
 
-  patient  Patient       @relation(fields: [patientId], references: [id])
-  items    InvoiceItem[]
-  payments Payment[]
+  patient         Patient          @relation(fields: [patientId], references: [id])
+  items           InvoiceItem[]
+  payments        Payment[]
+  insuranceClaims InsuranceClaim[]
 
   @@index([patientId])
 }
@@ -635,4 +637,53 @@ model BloodRequest {
   patient Patient? @relation(fields: [patientId], references: [id])
 
   @@index([patientId])
+}
+
+enum PolicyStatus {
+  ACTIVE
+  EXPIRED
+  CANCELLED
+}
+
+enum ClaimStatus {
+  SUBMITTED
+  APPROVED
+  REJECTED
+  PAID
+}
+
+model InsurancePolicy {
+  id              String       @id @default(cuid())
+  patientId       String
+  provider        String
+  policyNumber    String       @unique
+  coverageDetails String?
+  status          PolicyStatus @default(ACTIVE)
+  startDate       DateTime
+  endDate         DateTime?
+  createdAt       DateTime     @default(now())
+  updatedAt       DateTime     @updatedAt
+
+  patient Patient          @relation(fields: [patientId], references: [id], onDelete: Cascade)
+  claims  InsuranceClaim[]
+
+  @@index([patientId])
+}
+
+model InsuranceClaim {
+  id            String      @id @default(cuid())
+  policyId      String
+  invoiceId     String?
+  claimNumber   String      @unique
+  amountClaimed Decimal     @db.Decimal(12, 2)
+  status        ClaimStatus @default(SUBMITTED)
+  notes         String?
+  submittedAt   DateTime    @default(now())
+  resolvedAt    DateTime?
+
+  policy  InsurancePolicy @relation(fields: [policyId], references: [id], onDelete: Cascade)
+  invoice Invoice?        @relation(fields: [invoiceId], references: [id])
+
+  @@index([policyId])
+  @@index([invoiceId])
 }
