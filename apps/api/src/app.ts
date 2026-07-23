@@ -23,6 +23,7 @@ import ambulanceRoutes from "./modules/ambulance/ambulance.routes";
 import bloodBankRoutes from "./modules/blood-bank/blood-bank.routes";
 import insuranceRoutes from "./modules/insurance/insurance.routes";
 import reportsRoutes from "./modules/reports/reports.routes";
+import chatRoutes from "./modules/chat/chat.routes";
 
 const app = express();
 
@@ -51,6 +52,7 @@ app.use("/api/ambulance", ambulanceRoutes);
 app.use("/api/blood-bank", bloodBankRoutes);
 app.use("/api/insurance", insuranceRoutes);
 app.use("/api/reports", reportsRoutes);
+app.use("/api/chat", chatRoutes);
 
 app.get("/health", (_req, res) => res.json({ status: "ok" }));
 

@@ -153,8 +153,10 @@ model User {
   doctorProfile         Doctor?
   notifications         Notification[]
   aiConversations       AiConversation[]
-  appointmentsAsPatient Appointment[]    @relation("PatientAppointments")
-  appointmentsAsDoctor  Appointment[]    @relation("DoctorAppointments")
+  chatParticipants      ChatParticipant[]
+  sentChatMessages      ChatMessage[]
+  appointmentsAsPatient Appointment[]     @relation("PatientAppointments")
+  appointmentsAsDoctor  Appointment[]     @relation("DoctorAppointments")
 
   @@index([email])
   @@index([hospitalId])
@@ -686,4 +688,42 @@ model InsuranceClaim {
 
   @@index([policyId])
   @@index([invoiceId])
+}
+
+model ChatConversation {
+  id        String   @id @default(cuid())
+  isGroup   Boolean  @default(false)
+  name      String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  participants ChatParticipant[]
+  messages     ChatMessage[]
+}
+
+model ChatParticipant {
+  id             String    @id @default(cuid())
+  conversationId String
+  userId         String
+  joinedAt       DateTime  @default(now())
+  lastReadAt     DateTime?
+
+  conversation ChatConversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+  user         User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([conversationId, userId])
+  @@index([userId])
+}
+
+model ChatMessage {
+  id             String   @id @default(cuid())
+  conversationId String
+  senderId       String
+  content        String
+  createdAt      DateTime @default(now())
+
+  conversation ChatConversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+  sender       User             @relation(fields: [senderId], references: [id], onDelete: Cascade)
+
+  @@index([conversationId])
 }
