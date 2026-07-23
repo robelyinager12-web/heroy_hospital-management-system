@@ -22,6 +22,7 @@ import ipdRoutes from "./modules/ipd/ipd.routes";
 import ambulanceRoutes from "./modules/ambulance/ambulance.routes";
 import bloodBankRoutes from "./modules/blood-bank/blood-bank.routes";
 import insuranceRoutes from "./modules/insurance/insurance.routes";
+import reportsRoutes from "./modules/reports/reports.routes";
 
 const app = express();
 
@@ -49,6 +50,7 @@ app.use("/api/ipd", ipdRoutes);
 app.use("/api/ambulance", ambulanceRoutes);
 app.use("/api/blood-bank", bloodBankRoutes);
 app.use("/api/insurance", insuranceRoutes);
+app.use("/api/reports", reportsRoutes);
 
 app.get("/health", (_req, res) => res.json({ status: "ok" }));
 
