@@ -3,7 +3,7 @@ import {
   BedDouble, Pill, FlaskConical, Scan, Scissors, Receipt, Wallet, Banknote,
   Package, Truck, Droplet, ShieldCheck, BarChart3, Bell, MessageSquare,
   Video, Bot, Mic, Settings, ScrollText, DatabaseBackup, Building2,
-  Briefcase, type LucideIcon,
+  Briefcase, Newspaper, type LucideIcon,
 } from "lucide-react";
 
 export interface NavItem {
@@ -41,6 +41,7 @@ export const NAV_ITEMS: NavItem[] = [
   { label: "AI Assistant", href: "/dashboard/ai-assistant", icon: Bot, roles: ["*"] },
   { label: "Voice Assistant", href: "/dashboard/voice-assistant", icon: Mic, roles: ["*"] },
   { label: "Recruitment", href: "/dashboard/recruitment", icon: Briefcase, roles: ["SUPER_ADMIN", "HOSPITAL_ADMIN", "HR_MANAGER"] },
+  { label: "Blog", href: "/dashboard/blog-admin", icon: Newspaper, roles: ["SUPER_ADMIN", "HOSPITAL_ADMIN"] },
   { label: "Hospitals", href: "/dashboard/hospitals", icon: Building2, roles: ["SUPER_ADMIN"] },
   { label: "Audit Logs", href: "/dashboard/audit-logs", icon: ScrollText, roles: ["SUPER_ADMIN", "HOSPITAL_ADMIN"] },
   { label: "Backup", href: "/dashboard/backup", icon: DatabaseBackup, roles: ["SUPER_ADMIN"] },
