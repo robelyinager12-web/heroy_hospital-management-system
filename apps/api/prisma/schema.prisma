@@ -156,6 +156,7 @@ model User {
   chatParticipants      ChatParticipant[]
   sentChatMessages      ChatMessage[]
   blogPosts             BlogPost[]
+  jobPostings           JobPosting[]
   appointmentsAsPatient Appointment[]     @relation("PatientAppointments")
   appointmentsAsDoctor  Appointment[]     @relation("DoctorAppointments")
 
@@ -760,4 +761,51 @@ model CmsPage {
   status    ContentStatus @default(DRAFT)
   updatedAt DateTime      @updatedAt
   createdAt DateTime      @default(now())
+}
+
+enum JobPostingStatus {
+  OPEN
+  CLOSED
+}
+
+enum ApplicationStatus {
+  SUBMITTED
+  SHORTLISTED
+  INTERVIEWING
+  OFFERED
+  REJECTED
+  HIRED
+}
+
+model JobPosting {
+  id           String           @id @default(cuid())
+  title        String
+  department   String?
+  description  String
+  requirements String?
+  status       JobPostingStatus @default(OPEN)
+  postedById   String
+  createdAt    DateTime         @default(now())
+  updatedAt    DateTime         @updatedAt
+
+  postedBy     User             @relation(fields: [postedById], references: [id])
+  applications JobApplication[]
+
+  @@index([postedById])
+}
+
+model JobApplication {
+  id             String            @id @default(cuid())
+  jobPostingId   String
+  applicantName  String
+  applicantEmail String
+  applicantPhone String?
+  resumeUrl      String?
+  coverLetter    String?
+  status         ApplicationStatus @default(SUBMITTED)
+  appliedAt      DateTime          @default(now())
+
+  jobPosting JobPosting @relation(fields: [jobPostingId], references: [id], onDelete: Cascade)
+
+  @@index([jobPostingId])
 }

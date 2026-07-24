@@ -25,6 +25,7 @@ import insuranceRoutes from "./modules/insurance/insurance.routes";
 import reportsRoutes from "./modules/reports/reports.routes";
 import chatRoutes from "./modules/chat/chat.routes";
 import cmsRoutes from "./modules/cms/cms.routes";
+import recruitmentRoutes from "./modules/recruitment/recruitment.routes";
 
 const app = express();
 
@@ -55,6 +56,7 @@ app.use("/api/insurance", insuranceRoutes);
 app.use("/api/reports", reportsRoutes);
 app.use("/api/chat", chatRoutes);
 app.use("/api/cms", cmsRoutes);
+app.use("/api/recruitment", recruitmentRoutes);
 
 app.get("/health", (_req, res) => res.json({ status: "ok" }));
 
