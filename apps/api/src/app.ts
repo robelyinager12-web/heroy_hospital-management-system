@@ -26,6 +26,8 @@ import reportsRoutes from "./modules/reports/reports.routes";
 import chatRoutes from "./modules/chat/chat.routes";
 import cmsRoutes from "./modules/cms/cms.routes";
 import recruitmentRoutes from "./modules/recruitment/recruitment.routes";
+import auditLogsRoutes from "./modules/audit-logs/audit-logs.routes";
+import { autoAuditLog } from "./middlewares/audit-log.middleware";
 import hospitalsRoutes from "./modules/hospitals/hospitals.routes";
 
 const app = express();
@@ -35,6 +37,7 @@ app.use(cors({ origin: [process.env.CLIENT_URL ?? "http://localhost:3000", "http
 app.use(express.json());
 app.use(cookieParser());
 app.use(globalRateLimiter);
+app.use(autoAuditLog);
 
 app.use("/api/auth", authRoutes);
 app.use("/api/patients", patientsRoutes);
@@ -59,6 +62,7 @@ app.use("/api/chat", chatRoutes);
 app.use("/api/cms", cmsRoutes);
 app.use("/api/recruitment", recruitmentRoutes);
 app.use("/api/hospitals", hospitalsRoutes);
+app.use("/api/audit-logs", auditLogsRoutes);
 
 app.get("/health", (_req, res) => res.json({ status: "ok" }));
 
