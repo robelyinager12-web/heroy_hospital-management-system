@@ -157,6 +157,7 @@ model User {
   sentChatMessages      ChatMessage[]
   blogPosts             BlogPost[]
   jobPostings           JobPosting[]
+  expenses              Expense[]
   appointmentsAsPatient Appointment[]     @relation("PatientAppointments")
   appointmentsAsDoctor  Appointment[]     @relation("DoctorAppointments")
 
@@ -808,4 +809,27 @@ model JobApplication {
   jobPosting JobPosting @relation(fields: [jobPostingId], references: [id], onDelete: Cascade)
 
   @@index([jobPostingId])
+}
+
+enum ExpenseCategory {
+  SALARIES
+  SUPPLIES
+  EQUIPMENT
+  UTILITIES
+  MAINTENANCE
+  OTHER
+}
+
+model Expense {
+  id           String          @id @default(cuid())
+  description  String
+  category     ExpenseCategory
+  amount       Decimal         @db.Decimal(12, 2)
+  incurredAt   DateTime        @default(now())
+  recordedById String
+  createdAt    DateTime        @default(now())
+
+  recordedBy User @relation(fields: [recordedById], references: [id])
+
+  @@index([recordedById])
 }

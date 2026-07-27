@@ -24,6 +24,12 @@ export const authRepository = {
   revokeRefreshToken: (tokenHash: string) =>
     prisma.refreshToken.update({ where: { tokenHash }, data: { revokedAt: new Date() } }),
 
+  updateProfile: (userId: string, data: { firstName?: string; lastName?: string; phone?: string }) =>
+    prisma.user.update({ where: { id: userId }, data }),
+
+  updatePassword: (userId: string, passwordHash: string) =>
+    prisma.user.update({ where: { id: userId }, data: { passwordHash } }),
+
   updateLastLogin: (userId: string, ip: string) =>
     prisma.user.update({ where: { id: userId }, data: { lastLoginAt: new Date(), lastLoginIp: ip } }),
 };

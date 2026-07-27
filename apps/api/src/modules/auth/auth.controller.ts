@@ -1,6 +1,8 @@
 import { Request, Response, NextFunction } from "express";
+import { AuthenticatedRequest } from "../../middlewares/auth.middleware";
+import { AuthenticatedRequest } from "../../middlewares/auth.middleware";
 import { authService } from "./auth.service";
-import { registerSchema, loginSchema } from "./auth.validation";
+import { registerSchema, loginSchema, updateProfileSchema, changePasswordSchema } from "./auth.validation";
 
 export const authController = {
   async register(req: Request, res: Response, next: NextFunction) {
@@ -56,4 +58,91 @@ export const authController = {
       next(err);
     }
   },
+  async getProfile(req: AuthenticatedRequest, res: Response, next: NextFunction) {
+    try {
+      const profile = await authService.getProfile(req.user!.id);
+      res.json({ profile });
+    } catch (err) {
+      next(err);
+    }
+  },
+
+  async updateProfile(req: AuthenticatedRequest, res: Response, next: NextFunction) {
+    try {
+      const input = updateProfileSchema.parse(req.body);
+      const profile = await authService.updateProfile(req.user!.id, input);
+      res.json({ profile });
+    } catch (err) {
+      next(err);
+    }
+  },
+
+  async changePassword(req: AuthenticatedRequest, res: Response, next: NextFunction) {
+    try {
+      const input = changePasswordSchema.parse(req.body);
+      await authService.changePassword(req.user!.id, input);
+      res.json({ message: "Password changed successfully" });
+    } catch (err) {
+      next(err);
+    }
+  },
+
+  async getProfile(req: AuthenticatedRequest, res: Response, next: NextFunction) {
+    try {
+      const profile = await authService.getProfile(req.user!.id);
+      res.json({ profile });
+    } catch (err) {
+      next(err);
+    }
+  },
+
+  async updateProfile(req: AuthenticatedRequest, res: Response, next: NextFunction) {
+    try {
+      const input = updateProfileSchema.parse(req.body);
+      const profile = await authService.updateProfile(req.user!.id, input);
+      res.json({ profile });
+    } catch (err) {
+      next(err);
+    }
+  },
+
+  async changePassword(req: AuthenticatedRequest, res: Response, next: NextFunction) {
+    try {
+      const input = changePasswordSchema.parse(req.body);
+      await authService.changePassword(req.user!.id, input);
+      res.json({ message: "Password changed successfully" });
+    } catch (err) {
+      next(err);
+    }
+  },
+
+  async getProfile(req: AuthenticatedRequest, res: Response, next: NextFunction) {
+    try {
+      const profile = await authService.getProfile(req.user!.id);
+      res.json({ profile });
+    } catch (err) {
+      next(err);
+    }
+  },
+
+  async updateProfile(req: AuthenticatedRequest, res: Response, next: NextFunction) {
+    try {
+      const input = updateProfileSchema.parse(req.body);
+      const profile = await authService.updateProfile(req.user!.id, input);
+      res.json({ profile });
+    } catch (err) {
+      next(err);
+    }
+  },
+
+  async changePassword(req: AuthenticatedRequest, res: Response, next: NextFunction) {
+    try {
+      const input = changePasswordSchema.parse(req.body);
+      await authService.changePassword(req.user!.id, input);
+      res.json({ message: "Password changed successfully" });
+    } catch (err) {
+      next(err);
+    }
+  },
+
 };

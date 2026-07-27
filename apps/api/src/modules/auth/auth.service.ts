@@ -75,6 +75,37 @@ export const authService = {
     return { accessToken };
   },
 
+  async getProfile(userId: string) {
+    const user = await authRepository.findById(userId);
+    if (!user) throw new AppError(404, "User not found");
+    return {
+      id: user.id,
+      firstName: user.firstName,
+      lastName: user.lastName,
+      email: user.email,
+      phone: user.phone,
+      role: user.role,
+      avatarUrl: user.avatarUrl,
+    };
+  },
+
+  async updateProfile(userId: string, input: { firstName?: string; lastName?: string; phone?: string }) {
+    await this.getProfile(userId);
+    const updated = await authRepository.updateProfile(userId, input);
+    return { id: updated.id, firstName: updated.firstName, lastName: updated.lastName, phone: updated.phone };
+  },
+
+  async changePassword(userId: string, input: { currentPassword: string; newPassword: string }) {
+    const user = await authRepository.findById(userId);
+    if (!user) throw new AppError(404, "User not found");
+
+    const isValid = await comparePassword(input.currentPassword, user.passwordHash);
+    if (!isValid) throw new AppError(400, "Current password is incorrect");
+
+    const newHash = await hashPassword(input.newPassword);
+    await authRepository.updatePassword(userId, newHash);
+  },
+
   async logout(refreshToken: string) {
     const hash = hashRefreshToken(refreshToken);
     await authRepository.revokeRefreshToken(hash).catch(() => null);
