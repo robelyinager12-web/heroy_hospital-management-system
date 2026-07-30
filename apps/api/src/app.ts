@@ -28,6 +28,9 @@ import cmsRoutes from "./modules/cms/cms.routes";
 import recruitmentRoutes from "./modules/recruitment/recruitment.routes";
 import auditLogsRoutes from "./modules/audit-logs/audit-logs.routes";
 import backupRoutes from "./modules/backup/backup.routes";
+import accountingRoutes from "./modules/accounting/accounting.routes";
+import opdRoutes from "./modules/opd/opd.routes";
+import payrollRoutes from "./modules/payroll/payroll.routes";
 import { autoAuditLog } from "./middlewares/audit-log.middleware";
 import hospitalsRoutes from "./modules/hospitals/hospitals.routes";
 
@@ -65,6 +68,9 @@ app.use("/api/recruitment", recruitmentRoutes);
 app.use("/api/hospitals", hospitalsRoutes);
 app.use("/api/audit-logs", auditLogsRoutes);
 app.use("/api/backup", backupRoutes);
+app.use("/api/accounting", accountingRoutes);
+app.use("/api/opd", opdRoutes);
+app.use("/api/payroll", payrollRoutes);
 
 app.get("/health", (_req, res) => res.json({ status: "ok" }));
 
