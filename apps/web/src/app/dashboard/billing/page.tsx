@@ -81,7 +81,7 @@ export default function BillingPage() {
                   <td className="px-5 py-3 text-slate-400">
                     {inv.patient.user.firstName} {inv.patient.user.lastName}
                   </td>
-                  <td className="px-5 py-3 text-slate-300 font-medium">${inv.total}</td>
+                  <td className="px-5 py-3 text-slate-300 font-medium">Br {inv.total}</td>
                   <td className="px-5 py-3">
                     <span className={`px-2 py-0.5 rounded-full text-xs border ${statusColors[inv.status] ?? ""}`}>
                       {inv.status.replace(/_/g, " ")}

@@ -25,7 +25,7 @@ export default function OverviewPage() {
         <StatCard label="Total Patients" value={4821} change={8.2} icon={Users} gradient="from-cyan-500 to-blue-600" />
         <StatCard label="Today's Appointments" value={132} change={-2.4} icon={CalendarClock} gradient="from-violet-500 to-purple-600" />
         <StatCard label="Occupied Beds" value={287} suffix=" / 340" change={4.1} icon={BedDouble} gradient="from-amber-500 to-orange-600" />
-        <StatCard label="Revenue This Month" value={184200} prefix="$" change={12.7} icon={Receipt} gradient="from-emerald-500 to-teal-600" />
+        <StatCard label="Revenue This Month" value={184200} prefix="Br " change={12.7} icon={Receipt} gradient="from-emerald-500 to-teal-600" />
       </div>
 
       <div className="rounded-2xl border border-white/10 bg-white/5 backdrop-blur-xl p-6">

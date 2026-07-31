@@ -40,7 +40,7 @@ export function RecordPaymentModal({ invoice, onClose }: RecordPaymentModalProps
         </div>
 
         <p className="text-sm text-slate-400 mb-3">
-          Invoice {invoice.invoiceNo} — Total: ${invoice.total}
+          Invoice {invoice.invoiceNo} — Total: Br {invoice.total}
         </p>
 
         <form

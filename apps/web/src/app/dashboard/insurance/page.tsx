@@ -153,7 +153,7 @@ export default function InsurancePage() {
                   <td className="px-5 py-3 text-slate-400">
                     {c.policy.patient.user.firstName} {c.policy.patient.user.lastName}
                   </td>
-                  <td className="px-5 py-3 text-slate-300 font-medium">${c.amountClaimed}</td>
+                  <td className="px-5 py-3 text-slate-300 font-medium">Br {c.amountClaimed}</td>
                   <td className="px-5 py-3">
                     <select
                       value={c.status}

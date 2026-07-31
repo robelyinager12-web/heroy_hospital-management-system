@@ -164,7 +164,7 @@ export function CreateInvoiceModal({ open, onClose }: CreateInvoiceModalProps) {
 
           <div className="flex justify-between text-sm text-slate-300 pt-2 border-t border-white/10">
             <span>Total</span>
-            <span className="font-semibold text-white">${total.toFixed(2)}</span>
+            <span className="font-semibold text-white">Br {total.toFixed(2)}</span>
           </div>
 
           {mutation.isError && (

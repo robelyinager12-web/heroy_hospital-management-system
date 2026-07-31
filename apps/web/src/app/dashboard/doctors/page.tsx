@@ -92,7 +92,7 @@ export default function DoctorsPage() {
                   <td className="px-5 py-3 text-slate-400">{doctor.specialization}</td>
                   <td className="px-5 py-3 text-slate-400">{doctor.department?.name ?? "—"}</td>
                   <td className="px-5 py-3 text-slate-400">
-                    {doctor.consultationFee ? `$${doctor.consultationFee}` : "—"}
+                    {doctor.consultationFee ? `Br ${doctor.consultationFee}` : "—"}
                   </td>
                   <td className="px-5 py-3 text-right">
                     <button

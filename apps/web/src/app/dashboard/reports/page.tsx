@@ -62,7 +62,7 @@ export default function ReportsPage() {
           icon={BedDouble}
           gradient="from-teal-500 to-emerald-600"
         />
-        <StatCard label="Total Revenue" value={overview ? `$${Number(overview.totalRevenue).toLocaleString()}` : "—"} icon={DollarSign} gradient="from-emerald-500 to-teal-600" />
+        <StatCard label="Total Revenue" value={overview ? `Br ${Number(overview.totalRevenue).toLocaleString()}` : "—"} icon={DollarSign} gradient="from-emerald-500 to-teal-600" />
         <StatCard label="Active Emergencies" value={overview?.activeEmergencies ?? "—"} icon={Siren} gradient="from-red-500 to-orange-600" />
         <StatCard label="Low Stock Items" value={overview?.lowStockCount ?? "—"} icon={PackageX} gradient="from-amber-500 to-red-600" />
       </div>

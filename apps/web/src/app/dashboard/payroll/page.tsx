@@ -75,7 +75,7 @@ export default function PayrollPage() {
                   <td className="px-5 py-3 text-slate-400">
                     {MONTHS[p.periodMonth]} {p.periodYear}
                   </td>
-                  <td className="px-5 py-3 text-slate-300 font-medium">${p.netPay}</td>
+                  <td className="px-5 py-3 text-slate-300 font-medium">Br {p.netPay}</td>
                   <td className="px-5 py-3">
                     <select
                       value={p.status}
